@@ -13,6 +13,10 @@ import (
 //
 // Returns a list of blocks as JSON or an empty list if the db is empty and OK Status
 func GetAll(c *gin.Context) {
-	blocks := models.GetAllBlocks()
+	blocks, err := models.GetAllBlocks()
+	switch err {
+	case models.ErrStatusInternalServerError:
+		c.JSON(http.StatusInternalServerError, models.Block{})
+	}
 	c.JSON(http.StatusOK, blocks)
 }

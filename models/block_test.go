@@ -30,7 +30,7 @@ func TestGetAllBlocks(t *testing.T) {
 		defer database.DB.Close()
 		AddTestBlockToDB()
 		defer FlushDBTest()
-		got := GetAllBlocks()
+		got, _ := GetAllBlocks()
 		assert.Equal(t, []Block{testBlock}, got)
 	})
 }

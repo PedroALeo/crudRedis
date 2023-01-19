@@ -2,10 +2,15 @@ package models
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/PedroALeo/crudRedis/database"
 	geojson "github.com/paulmach/go.geojson"
+)
+
+var (
+	ErrStatusInternalServerError = errors.New("InternalServerError")
 )
 
 type Block struct {
@@ -29,17 +34,18 @@ func (b *Block) UnmarshalBinary(data []byte) error {
 // if there's an error or nothing on the database returns am empty Block slice
 //
 // Returns a BlockSlice
-func GetAllBlocks() []Block {
+func GetAllBlocks() ([]Block, error) {
 	keys, err := database.DB.Keys(database.CTX, "*:*").Result()
+	err = errors.New("fgfgsgf")
 	if err != nil {
 		fmt.Println(err)
-		return []Block{}
+		return []Block{}, ErrStatusInternalServerError
 	}
 
 	result, _ := database.DB.MGet(database.CTX, keys...).Result()
 	if err != nil {
 		fmt.Println(err)
-		return []Block{}
+		return []Block{}, ErrStatusInternalServerError
 	}
 
 	var blocks []Block
@@ -48,10 +54,10 @@ func GetAllBlocks() []Block {
 		var block Block
 		err := block.UnmarshalBinary([]byte(fmt.Sprint(item)))
 		if err != nil {
-			return []Block{}
+			return []Block{}, ErrStatusInternalServerError
 		}
 		blocks = append(blocks, block)
 	}
 
-	return blocks
+	return blocks, nil
 }
