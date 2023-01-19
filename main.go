@@ -1,9 +1,14 @@
 package main
 
-import "github.com/PedroALeo/crudRedis/database"
+import (
+	"github.com/PedroALeo/crudRedis/database"
+	"github.com/PedroALeo/crudRedis/routes"
+	"github.com/PedroALeo/crudRedis/scripts"
+)
 
 func main() {
 	database.ConnectRedis()
-	database.FlushDB()
-	database.PopulateDB(nil)
+	scripts.FlushDB()
+	scripts.PopulateDB(nil)
+	routes.RequestContollers()
 }
