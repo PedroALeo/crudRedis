@@ -24,6 +24,11 @@ func (b *Block) UnmarshalBinary(data []byte) error {
 	return json.Unmarshal(data, b)
 }
 
+// GetAllBlocks get all the blocks from the database
+//
+// if there's an error or nothing on the database returns am empty Block slice
+//
+// Returns a BlockSlice
 func GetAllBlocks() []Block {
 	keys, err := database.DB.Keys(database.CTX, "*:*").Result()
 	if err != nil {
@@ -49,5 +54,4 @@ func GetAllBlocks() []Block {
 	}
 
 	return blocks
-
 }
