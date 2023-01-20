@@ -29,8 +29,22 @@ func TestGetAllBlocks(t *testing.T) {
 		database.ConnectRedis()
 		defer database.DB.Close()
 		AddTestBlockToDB()
-		defer FlushDBTest()
 		got, _ := GetAllBlocks()
 		assert.Equal(t, []Block{testBlock}, got)
+		FlushDBTest()
+	})
+}
+
+func TestGetBlockById(t *testing.T) {
+
+	t.Run("get existing block by id", func(t *testing.T) {
+		database.ConnectRedis()
+		defer database.DB.Close()
+		AddTestBlockToDB()
+
+		got, _ := GetBlockByID("C0")
+		assert.Equal(t, testBlock, got)
+
+		FlushDBTest()
 	})
 }

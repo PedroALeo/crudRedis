@@ -11,6 +11,7 @@ import (
 
 var (
 	ErrStatusInternalServerError = errors.New("InternalServerError")
+	ErrStatusNotFound            = errors.New("NotFound")
 )
 
 type Block struct {
@@ -36,13 +37,12 @@ func (b *Block) UnmarshalBinary(data []byte) error {
 // Returns a BlockSlice
 func GetAllBlocks() ([]Block, error) {
 	keys, err := database.DB.Keys(database.CTX, "*:*").Result()
-	err = errors.New("fgfgsgf")
 	if err != nil {
 		fmt.Println(err)
 		return []Block{}, ErrStatusInternalServerError
 	}
 
-	result, _ := database.DB.MGet(database.CTX, keys...).Result()
+	result, err := database.DB.MGet(database.CTX, keys...).Result()
 	if err != nil {
 		fmt.Println(err)
 		return []Block{}, ErrStatusInternalServerError
@@ -60,4 +60,27 @@ func GetAllBlocks() ([]Block, error) {
 	}
 
 	return blocks, nil
+}
+
+func GetBlockByID(id string) (Block, error) {
+	pattern := id + ":" + "*"
+	key, err := database.DB.Keys(database.CTX, pattern).Result()
+	if err != nil {
+		return Block{}, ErrStatusInternalServerError
+	}
+	if key == nil {
+		return Block{}, ErrStatusNotFound
+	}
+
+	result, err := database.DB.Get(database.CTX, key[0]).Result()
+	if err != nil {
+		return Block{}, ErrStatusInternalServerError
+	}
+	var block Block
+	errb := block.UnmarshalBinary([]byte(fmt.Sprint(result)))
+	if errb != nil {
+		return Block{}, errb
+	}
+
+	return block, nil
 }
