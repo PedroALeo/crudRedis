@@ -62,6 +62,11 @@ func GetAllBlocks() ([]Block, error) {
 	return blocks, nil
 }
 
+// GetBlockByID get an Block from the database by id(key)
+//
+// if there's an error or no block with that id returns an empty block
+//
+// returns the Block related to the key
 func GetBlockByID(id string) (Block, error) {
 	pattern := id + ":" + "*"
 	key, err := database.DB.Keys(database.CTX, pattern).Result()

@@ -39,7 +39,7 @@ func PopulateDB(blocks []models.Block) {
 			Value:    2000,
 		}
 		f3 := models.Block{
-			ID:       "F3:0",
+			ID:       "F3:C0",
 			Name:     "FAZENDA 3",
 			ParentID: "0",
 			Centroid: *geojson.NewPointGeometry([]float64{-355.1165771484375, 52.3755991766591}),

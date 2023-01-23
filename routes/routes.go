@@ -8,8 +8,8 @@ import (
 func RequestContollers() {
 	r := gin.Default()
 	r.GET("/blocks", handlers.GetAll)
-	r.GET("/blocks/:id")
-	r.GET("/blocks/tree/:id")
+	r.GET("/blocks/:id", handlers.GetById)
+	r.GET("/blocks/tree/:id", handlers.GetTree)
 	r.POST("/blocks")
 	r.PUT("/blocks/:id")
 	r.DELETE("/blocks/:id")
