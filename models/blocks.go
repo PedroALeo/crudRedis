@@ -62,7 +62,7 @@ func GetAllBlocks() ([]Block, error) {
 	return blocks, nil
 }
 
-// GetBlockByID get an Block from the database by id(key)
+// GetBlockByID get a Block from the database by id(key)
 //
 // if there's an error or no block with that id returns an empty block
 //
@@ -90,6 +90,11 @@ func GetBlockByID(id string) (Block, error) {
 	return block, nil
 }
 
+// DeleteBlock delete a Block from the database by id(key)
+//
+// if there's an error or no block with that id returns a ErrStatusNotFound
+//
+// returns nothing indicating success
 func DeleteBlock(id string) error {
 	pat := id + ":*"
 	key, err := database.DB.Keys(database.CTX, pat).Result()
@@ -101,6 +106,11 @@ func DeleteBlock(id string) error {
 	return nil
 }
 
+// PutBlock update a Block from the database
+//
+// if there's an error or no block with that id returns an empty block and an error
+//
+// returns the updated Block
 func PutBlock(block *Block) (Block, error) {
 	blockR, err := GetBlockByID(block.ID)
 	if err != nil {
@@ -110,6 +120,11 @@ func PutBlock(block *Block) (Block, error) {
 	return *block, nil
 }
 
+// NewBlock create a new block in the database
+//
+// if there's an error returns an empty block and an error
+//
+// returns the new Block
 func NewBlock(block *Block) (Block, error) {
 	key := block.ID + ":" + block.ParentID
 	_, err := database.DB.Set(database.CTX, key, block, 0).Result()
