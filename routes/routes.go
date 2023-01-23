@@ -12,6 +12,6 @@ func RequestContollers() {
 	r.GET("/blocks/tree/:id", handlers.GetTree)
 	r.DELETE("/blocks/:id", handlers.Delete)
 	r.PUT("/blocks/:id", handlers.Put)
-	r.POST("/blocks")
+	r.POST("/blocks", handlers.PostBlock)
 	r.Run()
 }

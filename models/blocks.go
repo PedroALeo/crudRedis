@@ -109,3 +109,13 @@ func PutBlock(block *Block) (Block, error) {
 	database.DB.Set(database.CTX, blockR.ID, block, 0)
 	return *block, nil
 }
+
+func NewBlock(block *Block) (Block, error) {
+	key := block.ID + ":" + block.ParentID
+	_, err := database.DB.Set(database.CTX, key, block, 0).Result()
+	if err != nil {
+		return Block{}, ErrStatusInternalServerError
+	}
+
+	return *block, nil
+}

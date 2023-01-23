@@ -80,5 +80,23 @@ func Put(c *gin.Context) {
 		})
 	}
 	c.JSON(http.StatusOK, block)
+}
+
+func PostBlock(c *gin.Context) {
+	var block models.Block
+
+	if err := c.ShouldBindJSON(&block); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Internal Server Error",
+		})
+	}
+
+	blockR, err := models.NewBlock(&block)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Internal Server Error",
+		})
+	}
+	c.JSON(http.StatusOK, blockR)
 
 }
