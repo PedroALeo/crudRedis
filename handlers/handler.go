@@ -21,6 +21,11 @@ func GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, blocks)
 }
 
+// GetById handles the route to get a block from the db using id
+//
+// GET /blocks/id
+//
+// Returns a block as JSON or an empty block if the db is empty and OK Status
 func GetById(c *gin.Context) {
 	id := c.Params.ByName("id")
 	block, err := models.GetBlockByID(id)
@@ -35,8 +40,26 @@ func GetById(c *gin.Context) {
 	c.JSON(http.StatusOK, block)
 }
 
+// GetTree handles the route to get a tree using a block as root specified by id
+//
+// GET /blocks/tree/id
+//
+// Returns a tree as JSON or an empty block if the db is empty and OK Status
 func GetTree(c *gin.Context) {
 	id := c.Params.ByName("id")
 	tree := models.GetTreeByID(id)
 	c.JSON(http.StatusOK, tree)
+}
+
+func Delete(c *gin.Context) {
+	id := c.Params.ByName("id")
+
+	err := models.DeleteBlock(id)
+
+	switch err {
+	case models.ErrStatusNotFound:
+		c.JSON(http.StatusNotFound, nil)
+	default:
+		c.JSON(http.StatusOK, nil)
+	}
 }

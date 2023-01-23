@@ -15,8 +15,13 @@ func GetTreeByID(id string) Tree {
 	var tree Tree
 	var keysChildren []string
 	var blockId string
+	var err error
 
-	tree.Block, _ = GetBlockByID(id)
+	tree.Block, err = GetBlockByID(id)
+	if err != nil {
+		return Tree{}
+	}
+
 	idM := strings.Split(tree.Block.ID, ":")
 	blockId = idM[0]
 

@@ -89,3 +89,14 @@ func GetBlockByID(id string) (Block, error) {
 
 	return block, nil
 }
+
+func DeleteBlock(id string) error {
+	pat := id + ":*"
+	key, err := database.DB.Keys(database.CTX, pat).Result()
+	if err != nil {
+		return ErrStatusNotFound
+	}
+
+	database.DB.Del(database.CTX, key[0])
+	return nil
+}
