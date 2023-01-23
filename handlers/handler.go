@@ -51,6 +51,11 @@ func GetTree(c *gin.Context) {
 	c.JSON(http.StatusOK, tree)
 }
 
+// Delete handles the route to delete a block specified by id
+//
+// DELETE /blocks/id
+//
+// Returns a Status NotFound if theres an error or Status OK in case of success
 func Delete(c *gin.Context) {
 	id := c.Params.ByName("id")
 
@@ -64,6 +69,11 @@ func Delete(c *gin.Context) {
 	}
 }
 
+// Put handles the route to update a block in the database specified by ID
+//
+// PUT /blocks/id
+//
+// Returns the updated block and statusOK or an error and statusNotFound
 func Put(c *gin.Context) {
 	var block models.Block
 	id := c.Params.ByName("id")
@@ -82,6 +92,11 @@ func Put(c *gin.Context) {
 	c.JSON(http.StatusOK, block)
 }
 
+// PostBlock handles the route to create a new block in the database
+//
+// POST /blocks
+//
+// Returns the created block an StatusOK or returns an error an StatusInternalServerError
 func PostBlock(c *gin.Context) {
 	var block models.Block
 
@@ -98,5 +113,4 @@ func PostBlock(c *gin.Context) {
 		})
 	}
 	c.JSON(http.StatusOK, blockR)
-
 }

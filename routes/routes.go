@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// HandleRoutes handles the application routes
 func RequestContollers() {
 	r := gin.Default()
 	r.GET("/blocks", handlers.GetAll)

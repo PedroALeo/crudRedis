@@ -11,6 +11,7 @@ var (
 	CTX context.Context
 )
 
+// ConnectRedis start a connection with the redis database
 func ConnectRedis() {
 	CTX = context.Background()
 
