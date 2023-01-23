@@ -63,3 +63,22 @@ func Delete(c *gin.Context) {
 		c.JSON(http.StatusOK, nil)
 	}
 }
+
+func Put(c *gin.Context) {
+	var block models.Block
+	id := c.Params.ByName("id")
+	block.ID = id
+	if err := c.ShouldBindJSON(&block); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": err.Error()})
+		return
+	}
+	block, err := models.PutBlock(&block)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "nonExistant key on database",
+		})
+	}
+	c.JSON(http.StatusOK, block)
+
+}

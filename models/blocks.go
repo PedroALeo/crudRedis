@@ -100,3 +100,12 @@ func DeleteBlock(id string) error {
 	database.DB.Del(database.CTX, key[0])
 	return nil
 }
+
+func PutBlock(block *Block) (Block, error) {
+	blockR, err := GetBlockByID(block.ID)
+	if err != nil {
+		return Block{}, ErrStatusNotFound
+	}
+	database.DB.Set(database.CTX, blockR.ID, block, 0)
+	return *block, nil
+}
